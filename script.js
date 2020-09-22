@@ -1,3 +1,4 @@
+"use strict";
 // first step create Class Calc
 class Calc{
     constructor(input, output){
@@ -18,7 +19,7 @@ class Calc{
         switch (this.getLastInputType()){
             case "number":
                 if(this.getLastInputValue().length > 1) {
-                    this.editLastInput(this.getLastInputValue().slice(0, 1),"number");
+                    this.editLastInput(this.getLastInputValue().slice(0, -1),"number");
                 }else {
                     this.deleteLastInput();
                 }
@@ -59,8 +60,8 @@ class Calc{
            case "equals":
                let output = this.getOutputValue();
                this.clearALLHistory();
+               this.addNewInput(output,"number");
                this.addNewInput(value,"operator");
-               this.addNewInput(value,"number");
             break;
            default:
                return;
@@ -87,22 +88,23 @@ class Calc{
     generateResult(){
         if(this.getLastInputType() === "number"){
             const self = this;
-            const simplifyExpression = function(currentExpression, operator){
-                if(currentExpression.indexOf(operator)=== -1){
+            const simplifyExpression = function (currentExpression, operator){
+                if(currentExpression.indexOf(operator) === -1){
                     return currentExpression;
                 }else{
                     let operatorIdx = currentExpression.indexOf(operator);
                     let leftOperandIdx = operatorIdx - 1;
-                    let rightOperand = operatorIdx + 1;
+                    let rightOperandIdx = operatorIdx + 1;
 
                     let partialSolution = self.performOperation(...currentExpression.slice(leftOperandIdx, rightOperandIdx +1));
 
-                    currentExpression.slice(leftOperandIdx,3, partialSolution.toString());
+                    currentExpression.slice(leftOperandIdx, 3, partialSolution.toString());
+
                     return simplifyExpression(currentExpression, operator);
                 }
             }
-            let result = ["*","/","-","+"].reduce(simplifyExpression, this.getLastInputType());
-            this.addNewInput("=","equal");
+            let result = ["*","/","-","+"].reduce(simplifyExpression, this.getALLInputValues());
+            this.addNewInput("=","equals");
             this.updateOutputDisplay(result.toString());
         }
     }
@@ -119,7 +121,7 @@ class Calc{
         return this.inputHistory.map(entry => entry.value);
     }
     getOutputValue() {
-        return this.outputDisplay.value.replace(/,/g,'');
+        return this.outputDisplay.value.replace( /,/g,'');
     }
     addNewInput(value,type){
         this.inputHistory.push({"type": type,"value": value.toString()});
@@ -143,11 +145,12 @@ class Calc{
     updateOutputDisplay(value){
         this.outputDisplay.value = Number(value).toLocaleString();
     }
+
     performOperation(leftOperand,operation, rightOperand){
         leftOperand = parseFloat(leftOperand);
         rightOperand = parseFloat(rightOperand);
 
-        if(Number.isNaN(leftOperand) || Number.isNaN(rightOperand)){
+        if (Number.isNaN(leftOperand) || Number.isNaN(rightOperand)){
             return;
         }
         switch (operation){
@@ -163,9 +166,6 @@ class Calc{
                 return;
         }
     }
-
-
-
 }
 // END CLASS CALC
 
@@ -175,8 +175,8 @@ const outputDisplay = document.querySelector("#result");
 const allClearButton = document.querySelector("[data-all-clear]");
 const backspaceButton = document.querySelector("[data-backspace]");
 const percentButton = document.querySelector("[data-percent]");
-const operationButton = document.querySelectorAll("[data-operation]");
-const numberButton = document.querySelectorAll("[data-number]");
+const operationButtons = document.querySelectorAll("[data-operator]");
+const numberButtons = document.querySelectorAll("[data-number]");
 
 const negationButton = document.querySelector("[data-negation]");
 const decimalButton = document.querySelector("[data-decimal]");
@@ -184,6 +184,7 @@ const equalsButton = document.querySelector("[data-equals]");
 
 //Create New Calculator:
 const calculator = new Calc(inputDisplay, outputDisplay);
+
 // Add event handlers  to the calculator buttons
 allClearButton.addEventListener("click",() => {
     calculator.cleanAllHistory();
@@ -197,14 +198,14 @@ percentButton.addEventListener("click", () => {
     calculator.changePercentToDecimal();
 });
 
-operationButton.forEach(button => {
+operationButtons.forEach(button => {
     button.addEventListener("click", (event) => {
         let {target} = event;
         calculator.insertOperation(target.dataset.operator);
     });
 });
 
-numberButton.forEach(button => {
+numberButtons.forEach(button => {
     button.addEventListener("click", (event) => {
         let {target} = event;
         calculator.insertNumber(target.dataset.number);
