@@ -1,6 +1,6 @@
 "use strict";
 // first step create Class Calc
-class Calc{
+class Calculator{
     constructor(input, output){
         this.inputDisplay = input;
         this.outputDisplay = output;
@@ -34,7 +34,7 @@ class Calc{
 
     // this is percent function
     changePercentToDecimal(){
-        if(this.getLastInputType()=== "number"){
+        if(this.getLastInputType() === "number"){
             this.editLastInput(this.getLastInputValue()/ 100, "number");
         }
     };
@@ -59,7 +59,7 @@ class Calc{
             break;
            case "equals":
                let output = this.getOutputValue();
-               this.clearALLHistory();
+               this.clearAllHistory();
                this.addNewInput(output,"number");
                this.addNewInput(value,"operator");
             break;
@@ -96,14 +96,14 @@ class Calc{
                     let leftOperandIdx = operatorIdx - 1;
                     let rightOperandIdx = operatorIdx + 1;
 
-                    let partialSolution = self.performOperation(...currentExpression.slice(leftOperandIdx, rightOperandIdx +1));
+                    let partialSolution = self.performOperation(...currentExpression.slice(leftOperandIdx, rightOperandIdx + 1));
 
-                    currentExpression.slice(leftOperandIdx, 3, partialSolution.toString());
+                    currentExpression.splice(leftOperandIdx, 3, partialSolution.toString());
 
                     return simplifyExpression(currentExpression, operator);
                 }
             }
-            let result = ["*","/","-","+"].reduce(simplifyExpression, this.getALLInputValues());
+            let result = ["*","/","-","+"].reduce(simplifyExpression, this.getAllInputValues());
             this.addNewInput("=","equals");
             this.updateOutputDisplay(result.toString());
         }
@@ -121,7 +121,7 @@ class Calc{
         return this.inputHistory.map(entry => entry.value);
     }
     getOutputValue() {
-        return this.outputDisplay.value.replace( /,/g,'');
+        return this.outputDisplay.value.replace(/,/g,'');
     }
     addNewInput(value,type){
         this.inputHistory.push({"type": type,"value": value.toString()});
@@ -140,7 +140,7 @@ class Calc{
         this.updateInputDisplay();
     }
     updateInputDisplay() {
-        this.inputDisplay.value = this.getAllInputValues().join("");
+        this.inputDisplay.value = this.getAllInputValues().join(" ");
     }
     updateOutputDisplay(value){
         this.outputDisplay.value = Number(value).toLocaleString();
@@ -156,7 +156,7 @@ class Calc{
         switch (operation){
             case "*":
                 return leftOperand * rightOperand;
-            case ":":
+            case "/":
                return leftOperand / rightOperand;
             case "-":
                 return leftOperand - rightOperand;
@@ -183,7 +183,7 @@ const decimalButton = document.querySelector("[data-decimal]");
 const equalsButton = document.querySelector("[data-equals]");
 
 //Create New Calculator:
-const calculator = new Calc(inputDisplay, outputDisplay);
+const calculator = new Calculator(inputDisplay, outputDisplay);
 
 // Add event handlers  to the calculator buttons
 allClearButton.addEventListener("click",() => {
