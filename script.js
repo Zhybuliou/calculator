@@ -35,7 +35,7 @@ class Calculator{
     // this is percent function
     changePercentToDecimal(){
         if(this.getLastInputType() === "number"){
-            this.editLastInput(this.getLastInputValue()/ 100, "number");
+            this.updateOutputDisplay(this.getLastInputValue()/ 100, "number");
         }
     };
 
@@ -84,6 +84,13 @@ class Calculator{
         }
     }
 
+    // add sqrt function
+     sqrtNumber(){
+         if(this.getLastInputType() === "number"){
+             this.updateOutputDisplay(Math.sqrt(this.getLastInputValue()),"number");
+         }
+     }
+
     // generate result
     generateResult(){
         if(this.getLastInputType() === "number"){
@@ -103,7 +110,7 @@ class Calculator{
                     return simplifyExpression(currentExpression, operator);
                 }
             }
-            let result = ["*","/","-","+"].reduce(simplifyExpression, this.getAllInputValues());
+            let result = ["*","/","-","+","**"].reduce(simplifyExpression, this.getAllInputValues());
             this.addNewInput("=","equals");
             this.updateOutputDisplay(result.toString());
         }
@@ -162,6 +169,8 @@ class Calculator{
                 return leftOperand - rightOperand;
             case "+":
                 return leftOperand + rightOperand;
+            case "**":
+                return leftOperand ** rightOperand;
             default:
                 return;
         }
@@ -180,6 +189,7 @@ const numberButtons = document.querySelectorAll("[data-number]");
 
 const negationButton = document.querySelector("[data-negation]");
 const decimalButton = document.querySelector("[data-decimal]");
+const sqrtButton = document.querySelector("[data-sqrt]");
 const equalsButton = document.querySelector("[data-equals]");
 
 //Create New Calculator:
@@ -188,6 +198,10 @@ const calculator = new Calculator(inputDisplay, outputDisplay);
 // Add event handlers  to the calculator buttons
 allClearButton.addEventListener("click",() => {
     calculator.cleanAllHistory();
+});
+
+sqrtButton.addEventListener("click",() => {
+    calculator.sqrtNumber();
 });
 
 backspaceButton.addEventListener("click", () => {
