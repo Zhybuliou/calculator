@@ -1,0 +1,112 @@
+/* COLOR PALETTE */
+
+:root {
+    --accent1:#F68F00;
+    --accent2: #FF0A29;
+
+    --support1: #E1E3E1;
+    --support2: #B5BAB6;
+    --support3: #7E627F;
+
+    --whiteish: #E2F0Eb;
+    --blackish: #212121;
+}
+
+
+*,*::before,*::after{
+    padding: 0;
+    margin: 0;
+    box-sizing: border-box;
+}
+html {
+    height: 100%;
+}
+body{
+    padding: 50px;
+    font-family: "Courier New" monospace;
+    font-size: 1em;
+    background-image: linear-gradient(360deg,var(--whiteish),var(--accent2),var(--whiteish));
+
+}
+
+#calculator{
+    width: 332px;
+    padding: 10px;
+    margin:auto;
+    background-color: var(--whiteish);
+    font-size: 1.2rem;
+    border: solid 1px var(--support2);
+    border-radius: 10px;
+    box-shadow: 0px 1px 7px 0px var(--blackish);  
+}
+
+#display {
+    display: grid;
+    border: solid 1px var(--support2);
+    border-radius: 5px;
+    height: 70px;
+    color: var(--blackish);
+}
+#display input {
+    display: block;
+    text-align: right;
+    padding: 8px 7px;
+    background-color: #fff;
+    font-size: 0.9rem;
+    color: var(--support3);
+    border: none;
+}
+#display output {
+    display: block;
+    text-align: right;
+    padding: 0px 5px;
+    background-color: #fff;
+    font-weight: bold;
+    font-size: 2rem;
+    border: none;
+}
+
+#keypad{
+    display: grid;
+    grid-template-columns: auto  auto auto auto;
+    grid-gap: 10px;
+    padding-top: 10px;
+}
+#keypad button{
+    width: 70px;
+    height: 70px;
+    border: none;
+    border-radius: 50%;
+    font-family: inherit;
+    font-size: 1.5rem;
+    cursor: pointer;
+    outline: none;
+    background-color: var(--support1);
+
+}
+#keypad button:hover {
+    background-image: linear-gradient(120deg, var(--support2),var(--support1));
+}
+
+#keypad button.operator{
+    font-weight: bold;
+    font-size: 1.5rem;
+    background-color: var(--accent1);
+    color:var(--whiteish) ;
+}
+#keypad button.operator:hover{
+    background-image: linear-gradient(120deg,var(--blackish),var(--accent1));
+}
+.equals{
+    grid-column: 2/5;
+    grid-row: 6;
+    width: 100%!important;
+    border-radius: 5%!important;
+    background-color: var(--accent1)!important;
+    color:var(--whiteish)!important ;
+    font-weight: bold!important;
+    font-size: 1.5rem!important;
+}
+.equals:hover{
+    background-image: linear-gradient(120deg,var(--blackish),var(--accent1))!important;
+}
