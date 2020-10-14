@@ -47,6 +47,7 @@ class Calculator{
             this.addNewInput(value,"number");
         }else if(this.getLastInputType() === "equals"){
             this.addNewInput(value,"number");
+            // this.inputHistory = [];
             // this.updateOutputDisplay(value);
         }
     }
@@ -90,8 +91,10 @@ class Calculator{
     // add sqrt function
      sqrtNumber(){
          if(this.getLastInputType() === "number"){
+   
              this.updateOutputDisplay(Math.sqrt(this.getLastInputValue()),"number");
-             
+             this.addNewInput(Math.sqrt(this.getLastInputValue()),"number");
+             this.inputHistory.shift();
          }
      }
 
@@ -116,7 +119,7 @@ class Calculator{
             }
             let result = ["*","/","-","+","**"].reduce(simplifyExpression, this.getAllInputValues());
             this.addNewInput("=","equals");
-            this.updateOutputDisplay(result[result.length-1]);
+            this.updateOutputDisplay(parseFloat(result[result.length-1]));
             console.log(result);
         }
     }
@@ -133,7 +136,7 @@ class Calculator{
         return this.inputHistory.map(entry => entry.value);
     }
     getOutputValue() {
-        return this.outputDisplay.value.replace(/,/g,'');
+        return this.outputDisplay.value.replace(/,/g,'.');
     }
     addNewInput(value,type){
         this.inputHistory.push({"type": type,"value": value.toString()});
