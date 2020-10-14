@@ -59,9 +59,9 @@ class Calculator{
             break;
            case "equals":
                let output = this.getOutputValue();
-               this.clearAllHistory();
                this.addNewInput(output,"number");
                this.addNewInput(value,"operator");
+               this.updateInputDisplay();
             break;
            default:
                return;
@@ -112,7 +112,8 @@ class Calculator{
             }
             let result = ["*","/","-","+","**"].reduce(simplifyExpression, this.getAllInputValues());
             this.addNewInput("=","equals");
-            this.updateOutputDisplay(result.toString());
+            this.updateOutputDisplay(result[result.length-1]);
+            console.log(result);
         }
     }
 
