@@ -45,6 +45,9 @@ class Calculator{
             this.appendToLastInput(value);
         }else if(this.getLastInputType() === "operator" || this.getLastInputType() === null){
             this.addNewInput(value,"number");
+        }else if(this.getLastInputType() === "equals"){
+            this.addNewInput(value,"number");
+            // this.updateOutputDisplay(value);
         }
     }
 
@@ -88,6 +91,7 @@ class Calculator{
      sqrtNumber(){
          if(this.getLastInputType() === "number"){
              this.updateOutputDisplay(Math.sqrt(this.getLastInputValue()),"number");
+             
          }
      }
 
