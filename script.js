@@ -158,7 +158,7 @@ class Calculator{
         this.inputDisplay.value = this.getAllInputValues().join(" ");
     }
     updateOutputDisplay(value){
-        this.outputDisplay.value = Number(value).toLocaleString();
+        this.outputDisplay.value = Number(value).toLocaleString(undefined, {maximumFractionDigits: 10});
     }
 
     performOperation(leftOperand,operation, rightOperand){
